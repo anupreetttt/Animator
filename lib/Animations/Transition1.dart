@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 class Transition1 extends StatefulWidget {
   const Transition1({Key? key}) : super(key: key);
@@ -7,15 +8,17 @@ class Transition1 extends StatefulWidget {
   State<Transition1> createState() => _Transition1State();
 }
 
-class _Transition1State extends State<Transition1> {
-  bool isSmall = true ;
+class _Transition1State extends State<Transition1> with TickerProviderStateMixin{
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(seconds: 10),
+    vsync: this,
+  )..repeat();
 
-  double opacity = 1;
-  double _margin = 20;
-  double _width = 50;
-  double _height = 50;
-  Color _color = Colors.blue;
-  Curve _curve = Curves.bounceIn;
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,38 +26,52 @@ class _Transition1State extends State<Transition1> {
       appBar: AppBar(title: const Text('Transition One')),
       body: Row(
         children:  [
-          const Flexible(
+           Flexible(
             flex: 1,
-            child: Text("Animation 1"),
+            child: Container(
+              color: Colors.indigo,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text("Transition 1",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20
+                   ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "Hello click here to see the animation"
+                  ),)
+                ],
+              ),
+            )
           ),
           Flexible(
-
             flex: 2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // const Text(
-                //   'Hello there',
-                //   style: TextStyle(fontSize: 20.0),
-                // ),
-                AnimatedContainer(
-                  child: Image.asset("./images/gryffindor.jpeg"),
-                  // Changing just the star's size
-                  width: isSmall ? 120 : 300,
-                  height: isSmall ? 120 : 300,
-                  duration: const Duration(seconds: 04),
-                  curve: Curves.bounceOut,
-                ),
-              ],
+            child: Center(
+              child: AnimatedBuilder(
+                animation: _controller,
+                child: Image.asset("./images/harrypotter.jpeg", height: 50, width: 50,),
+
+                builder: (BuildContext context, Widget? child) {
+                  return Transform.scale(
+                    scale: _controller.value * 2.0 * math.pi,
+                    child: child,
+                  );
+                },
+              ),
             ),
-          )
+          ),
         ],
-      ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () => setState(() {isSmall = !isSmall ;} ),
-        //   tooltip: 'Switch star size',
-        //   child: const Icon(Icons.wifi_protected_setup_outlined),
-        // ),
+      )
     );
   }
 }

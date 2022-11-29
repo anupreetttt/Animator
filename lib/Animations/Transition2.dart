@@ -1,55 +1,83 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
-class Transition2 extends StatelessWidget {
+class Transition2 extends StatefulWidget {
   const Transition2({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Rotating Earth Animation'),
-    );
-  }
+  State<Transition2> createState() => _Transition2State();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class _Transition2State extends State<Transition2> {
 
-  final String title;
-
-  @override
-  _EarthState createState() => _EarthState();
-}
-
-class _EarthState extends State<MyHomePage> {
-
-  int count = 0 ;
+  bool onTouch = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-
-      backgroundColor: Colors.black45,
-
-      body: Center(
-        child: TweenAnimationBuilder(
-            duration: const Duration(seconds: 10),
-            tween: Tween<double>(begin: 0, end: 2.0 * pi),
-            builder: (_, double angle, __) {
-              // Animation value should be same type as Tween typ
-              return Transform.rotate(
-                  angle: angle,
-                  child:
-                  Image.asset("./images/star.jpg", fit: BoxFit.contain));
-            }),
+      appBar: AppBar(title: const Text('Transition One')),
+      body: Row(
+        children:  [
+          Flexible(
+              flex: 1,
+              child: Container(
+                color: Colors.indigo,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text("Animation across alignments",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(padding: EdgeInsets.all(8.0),
+                      child: Text(
+                          "Click on any part of the screen to see the animation",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 15,
+                        ),
+                      ),)
+                  ],
+                ),
+              )
+          ),
+          Flexible(
+            flex: 2,
+            child: GestureDetector(
+              child: Center(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("./images/voldemort2.jpeg"),
+                      fit: BoxFit.cover,
+                    )
+                  ),
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: AnimatedAlign(
+                    alignment: onTouch ? Alignment.bottomRight : Alignment.topLeft,
+                    duration: const Duration(milliseconds: 2000),
+                    curve: Curves.bounceOut,
+                    child: Image.asset("./images/harry.jpeg", height: 50, width: 50,),
+                  ),
+                ),
+              ),
+              onTap: () {
+                setState(() {
+                  onTouch = !onTouch;
+                });
+              },
+             )
+          ),
+        ],
       ),
 
     );
