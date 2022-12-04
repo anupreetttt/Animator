@@ -23,13 +23,13 @@ class _Transition1State extends State<Transition1> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Transition One')),
+      appBar: AppBar(title: const Text('Animation One')),
       body: Row(
         children:  [
            Flexible(
             flex: 1,
             child: Container(
-              color: Colors.indigo,
+              color: Colors.lightBlue[900],
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: const [
@@ -48,7 +48,7 @@ class _Transition1State extends State<Transition1> with TickerProviderStateMixin
                   ),
                   Padding(padding: EdgeInsets.all(8.0),
                   child: Text(
-                    "Hello click here to see the animation"
+                    "Scaling Harry Potter logo animation"
                   ),)
                 ],
               ),
@@ -63,7 +63,7 @@ class _Transition1State extends State<Transition1> with TickerProviderStateMixin
 
                 builder: (BuildContext context, Widget? child) {
                   return Transform.scale(
-                    scale: _controller.value * 2.0 * math.pi,
+                    scale: _controller.value * 1.5 * math.pi,
                     child: child,
                   );
                 },

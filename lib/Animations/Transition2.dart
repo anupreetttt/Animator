@@ -14,13 +14,13 @@ class _Transition2State extends State<Transition2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Transition One')),
+      appBar: AppBar(title: const Text('Transition Two')),
       body: Row(
         children:  [
           Flexible(
               flex: 1,
               child: Container(
-                color: Colors.indigo,
+                color: Colors.lightBlue[900],
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: const [
