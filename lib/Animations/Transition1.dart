@@ -48,8 +48,9 @@ class _Transition1State extends State<Transition1> with TickerProviderStateMixin
                   ),
                   Padding(padding: EdgeInsets.all(8.0),
                   child: Text(
-                    "Scaling Harry Potter logo animation"
-                  ),)
+                    "Scaling Harry Potter logo animation",
+                  style: TextStyle(color: Colors.white),)
+                    ,)
                 ],
               ),
             )

@@ -7,80 +7,105 @@ class Transition5 extends StatefulWidget {
   State<Transition5> createState() => _Transition5State();
 }
 
-class _Transition5State extends State<Transition5> {
+class _Transition5State extends State<Transition5> with TickerProviderStateMixin {
 
+  late AnimationController animationController;
+  late CurvedAnimation curveAnimation;
 
-  bool _OnClick = true;
-  double _fontSize = 25;
-  Color _color = Colors.black;
+  @override
+  void initState() {
+    animationController=AnimationController(vsync: this,duration: const Duration(seconds: 4));
+    curveAnimation=CurvedAnimation(parent: animationController, curve: Curves.bounceOut);
+    animationController.repeat();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Animation five')),
-        body: Row(
-          children:  [
-            Flexible(
-                flex: 1,
-                child: Container(
-                  color: Colors.lightBlue[900],
+      appBar: AppBar(title: const Text('Rotating bounce out animation'),
+          toolbarHeight: 65),
+      body: Row(
+        children: [
+          Flexible(
+              flex: 1,
+              child: Container(
+                color: const Color(0xff0D4C92),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: const [
                       SizedBox(
                         height: 5,
                       ),
-                      Text("Animation five",
+                      Text(
+                        "Rotating bounce out animation",
                         style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
-                      Padding(padding: EdgeInsets.all(10.0),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(40, 20, 20, 0),
                         child: Text(
-                            "Click on the floating button to see the fading animation between two images"
-                        ),)
+                          "This animation will rotate and then will bounce out. You can control the animation with pause button and resume it back. You can also reverse the animation by pressing the reverse button. It will pause the animation first then when you click again then it will reverse.",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                          ),
+                        ),
+                      )
                     ],
                   ),
-                )
-            ),
-            Flexible(
-                flex: 2,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                  SizedBox(
-                      height: 120,
-                      child: AnimatedDefaultTextStyle(
-                      duration: const Duration(milliseconds: 300),
-                      style: TextStyle(
-                      fontSize: _fontSize,
-                      color: _color,
-                         fontWeight: FontWeight.bold,
-                  ),
-                        child: const Text('Harry Potter'),
-                      ),
+                ),
+              )),
+          Flexible(
+            flex: 2,
+            child:  Container(
+              color: const Color(0xffCFF5E7),
+              child: Row(
+                  children: [
+                    RotationTransition(
+                      turns: Tween<double>(begin: 1,end: 0).animate(curveAnimation),
+                      alignment: Alignment.center,
+                      child: Image.asset("./images/logo.png", height: 150, width: 150,),
                     ),
-                     ],
-
-                )
+                    Column(
+                      children: <Widget> [ElevatedButton(onPressed: (){
+                        setState(() {
+                          if(animationController.isAnimating){
+                            animationController.stop();
+                          }else{
+                            animationController.reverse();
+                            animationController.repeat();
+                          }
+                        });
+                      }, child: const Text("Pause")),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(onPressed: () {
+                            setState(() {
+                              if(animationController.isAnimating){
+                                animationController.stop();
+                              }else{
+                                animationController.reverse();
+                              }
+                            });
+                          }, child: const Text("Reverse"),
+                          ),
+                        ),
+                      ],
+                    )]
+              ),
             ),
-            FloatingActionButton(
-              onPressed: () {
-                setState(() {
-                  _fontSize = _OnClick ? 40 : 30;
-                  _color = _OnClick ? Colors.blue : Colors.black;
-                  _OnClick = !_OnClick;
-                });
-              },
-              child: const Icon(Icons.wifi_protected_setup_outlined),
-            ),
-          ],
-        )
+          ),
+        ],
+      ),
     );
   }
 }
